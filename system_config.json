@@ -1,0 +1,11 @@
+﻿{
+  "system_name": "音乐驱动舞蹈辅助排演系统",
+  "version": "1.0.0",
+  "developer": "齐雨晴",
+  "student_id": "你的学号",
+  "email": "2178701560@qq.com",
+  "description": "音乐驱动舞蹈生成系统",
+  "port": 5000,
+  "start_command": "python run.py",
+  "requirements": "requirements.txt"
+}
