@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title>音乐驱动舞蹈辅助排演系统</title>
+
+    <!-- 中文字体解决方案 -->
+    <style>
+        /* 强制所有元素使用中文字体 */
+        * {
+            font-family: "Microsoft YaHei", "微软雅黑", "SimHei", "黑体", "PingFang SC", "Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif !important;
+        }
+
+        /* 图标字体保持原有 */
+        i, .fas, .fab, .far, .fa {
+            font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "Font Awesome 5 Free", "Font Awesome 5 Brands", "FontAwesome" !important;
+        }
+
+        /* 确保文字清晰 */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+    </style>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-music"></i> 音乐驱动舞蹈辅助排演系统</h1>
+            <p class="subtitle">AI驱动的舞蹈动作生成与可视化平台 - 专注于新疆舞蹈风格</p>
+        </header>
+
+        <div class="main-content">
+            <!-- 左侧面板：音乐上传与选择 -->
+            <div class="panel left-panel">
+                <h2><i class="fas fa-file-audio"></i> 音乐选择</h2>
+
+                <div class="upload-section">
+                    <h3>上传新音乐</h3>
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <p>点击或拖放音乐文件到此区域</p>
+                        <p class="file-types">支持格式: MP3, WAV, FLAC, M4A, AAC</p>
+                        <input type="file" id="musicFileInput" accept=".mp3,.wav,.flac,.m4a,.aac" style="display: none;">
+                        <button class="btn btn-primary" onclick="document.getElementById('musicFileInput').click()">
+                            选择文件
+                        </button>
+                    </div>
+                    <div id="uploadProgress" class="progress-container" style="display: none;">
+                        <div class="progress-bar" id="progressBar"></div>
+                        <span id="progressText">上传中...</span>
+                    </div>
+                </div>
+
+                <div class="music-list-section">
+                    <h3>已上传的音乐</h3>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchMusic" placeholder="搜索音乐...">
+                    </div>
+                    <div class="music-list" id="musicList">
+                        <!-- 音乐列表将通过JavaScript动态加载 -->
+                        <div class="loading">加载中...</div>
+                    </div>
+                </div>
+
+                <div class="music-info-section" id="musicInfoSection" style="display: none;">
+                    <h3>音乐信息</h3>
+                    <div class="info-card">
+                        <div class="info-row">
+                            <span class="info-label">文件名:</span>
+                            <span id="infoFilename" class="info-value"></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">时长:</span>
+                            <span id="infoDuration" class="info-value"></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">节奏(BPM):</span>
+                            <span id="infoTempo" class="info-value"></span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">拍子数量:</span>
+                            <span id="infoBeats" class="info-value"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 中间面板：舞蹈生成控制 -->
+            <div class="panel middle-panel">
+                <h2><i class="fas fa-user-dance"></i> 舞蹈生成设置</h2>
+
+                <div class="generation-controls">
+                    <div class="control-group">
+                        <h3>选择舞蹈风格</h3>
+                        <div class="style-grid">
+                            <div class="style-card" data-style="赛乃姆">
+                                <div class="style-icon">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <h4>赛乃姆</h4>
+                                <p class="style-desc">维吾尔族传统舞蹈，柔美舒展</p>
+                                <div class="style-tags">
+                                    <span class="tag">BPM: 60-90</span>
+                                </div>
+                            </div>
+                            <div class="style-card" data-style="萨玛舞">
+                                <div class="style-icon">
+                                    <i class="fas fa-pray"></i>
+                                </div>
+                                <h4>萨玛舞</h4>
+                                <p class="style-desc">庄重肃穆的宗教舞蹈</p>
+                                <div class="style-tags">
+                                    <span class="tag">BPM: 50-70</span>
+                                </div>
+                            </div>
+                            <div class="style-card" data-style="刀郎舞">
+                                <div class="style-icon">
+                                    <i class="fas fa-hat-cowboy"></i>
+                                </div>
+                                <h4>刀郎舞</h4>
+                                <p class="style-desc">活泼诙谐的民间舞蹈</p>
+                                <div class="style-tags">
+                                    <span class="tag">BPM: 90-105</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>附加关键词</h3>
+                        <div class="input-with-icon">
+                            <i class="fas fa-keyboard"></i>
+                            <input type="text" id="keywordsInput" placeholder="例如：柔美舒展、快速旋转、手臂动作...">
+                        </div>
+                        <div class="keywords-suggestions">
+                            <span class="suggestion-tag" data-keyword="抒情柔美">抒情柔美</span>
+                            <span class="suggestion-tag" data-keyword="活泼欢快">活泼欢快</span>
+                            <span class="suggestion-tag" data-keyword="庄重肃穆">庄重肃穆</span>
+                            <span class="suggestion-tag" data-keyword="旋转跳跃">旋转跳跃</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>生成选项</h3>
+                        <div class="options-grid">
+                            <div class="option">
+                                <label class="checkbox">
+                                    <input type="checkbox" id="optionSmooth" checked>
+                                    <span>动作平滑化</span>
+                                </label>
+                            </div>
+                            <div class="option">
+                                <label class="checkbox">
+                                    <input type="checkbox" id="optionAlign" checked>
+                                    <span>节奏对齐</span>
+                                </label>
+                            </div>
+                            <div class="option">
+                                <label class="checkbox">
+                                    <input type="checkbox" id="optionLoop">
+                                    <span>循环生成</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="generate-section">
+                        <button class="btn btn-generate" id="generateBtn">
+                            <i class="fas fa-play-circle"></i> 生成舞蹈动作
+                        </button>
+                        <div class="generate-info">
+                            <p><i class="fas fa-info-circle"></i> 生成过程可能需要1-2分钟，请耐心等待</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="generation-progress" id="generationProgress" style="display: none;">
+                    <h3>生成进度</h3>
+                    <div class="progress-steps">
+                        <div class="step active" id="step1">
+                            <div class="step-number">1</div>
+                            <div class="step-text">分析音乐</div>
+                        </div>
+                        <div class="step" id="step2">
+                            <div class="step-number">2</div>
+                            <div class="step-text">生成动作</div>
+                        </div>
+                        <div class="step" id="step3">
+                            <div class="step-number">3</div>
+                            <div class="step-text">创建视频</div>
+                        </div>
+                        <div class="step" id="step4">
+                            <div class="step-number">4</div>
+                            <div class="step-text">完成</div>
+                        </div>
+                    </div>
+                    <div class="progress-details" id="progressDetails">
+                        <!-- 进度详情将动态更新 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧面板：结果预览与输出 -->
+            <div class="panel right-panel">
+                <h2><i class="fas fa-video"></i> 结果预览</h2>
+
+                <div class="preview-section" id="previewSection" style="display: none;">
+                    <div class="video-container">
+                        <video id="previewVideo" controls>
+                            <source id="videoSource" src="" type="video/mp4">
+                            您的浏览器不支持视频播放
+                        </video>
+                        <div class="video-overlay" id="videoOverlay">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+
+                    <div class="video-controls">
+                        <button class="btn btn-small" id="playPauseBtn">
+                            <i class="fas fa-play"></i> 播放
+                        </button>
+                        <button class="btn btn-small" id="downloadVideoBtn">
+                            <i class="fas fa-download"></i> 下载视频
+                        </button>
+                        <button class="btn btn-small" id="restartBtn">
+                            <i class="fas fa-redo"></i> 重新生成
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results-section">
+                    <h3>生成结果</h3>
+                    <div class="results-list" id="resultsList">
+                        <!-- 结果列表将通过JavaScript动态加载 -->
+                        <div class="empty-state">
+                            <i class="fas fa-film"></i>
+                            <p>尚未生成舞蹈视频</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analysis-section" id="analysisSection" style="display: none;">
+                    <h3>舞蹈分析</h3>
+                    <div class="analysis-cards">
+                        <div class="analysis-card">
+                            <div class="analysis-icon">
+                                <i class="fas fa-ruler-combined"></i>
+                            </div>
+                            <div class="analysis-content">
+                                <h4>动作幅度</h4>
+                                <div class="analysis-value" id="analysisRange">--</div>
+                            </div>
+                        </div>
+                        <div class="analysis-card">
+                            <div class="analysis-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="analysis-content">
+                                <h4>平均速度</h4>
+                                <div class="analysis-value" id="analysisSpeed">--</div>
+                            </div>
+                        </div>
+                        <div class="analysis-card">
+                            <div class="analysis-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <div class="analysis-content">
+                                <h4>节奏匹配度</h4>
+                                <div class="analysis-value" id="analysisRhythm">--</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>音乐驱动舞蹈辅助排演系统 v1.0 | 专注于新疆舞蹈数字化传承与创新</p>
+            <p class="copyright">© 2023 新疆文化艺术数字化项目</p>
+        </footer>
+    </div>
+
+    <!-- 通知容器 -->
+    <div id="notificationContainer"></div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- 额外的字体修复脚本 -->
+    <script>
+        // 确保页面加载后字体正确
+        document.addEventListener('DOMContentLoaded', function() {
+            // 再次确认字体设置
+            const elements = document.querySelectorAll('body, h1, h2, h3, h4, h5, h6, p, span, div, button, input');
+            elements.forEach(el => {
+                el.style.fontFamily = '"Microsoft YaHei", "微软雅黑", sans-serif';
+            });
+
+            // 修复图标字体
+            const icons = document.querySelectorAll('i, .fas, .fab, .fa');
+            icons.forEach(icon => {
+                icon.style.fontFamily = '"Font Awesome 6 Free", "Font Awesome 5 Free", FontAwesome';
+            });
+        });
+    </script>
+</body>
+</html>

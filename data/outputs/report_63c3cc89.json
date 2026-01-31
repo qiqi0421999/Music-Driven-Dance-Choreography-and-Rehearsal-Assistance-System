@@ -1,0 +1,17 @@
+{
+  "generation_time": "2026-01-16 17:06:23",
+  "music_file": "2_20260116_111013_858e34.wav",
+  "dance_style": "萨玛舞",
+  "music_features": {
+    "tempo": 103.359375,
+    "duration": 14.210612244897959,
+    "beat_count": 25
+  },
+  "dance_info": {
+    "frame_count": 426,
+    "joint_count": 25
+  },
+  "output_files": {
+    "video": "dance_484d9aab.mp4"
+  }
+}

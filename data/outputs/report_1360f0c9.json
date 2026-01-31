@@ -1,0 +1,17 @@
+{
+  "generation_time": "2026-01-16 17:05:43",
+  "music_file": "6_20260116_170517_8d6723.wav",
+  "dance_style": "赛乃姆",
+  "music_features": {
+    "tempo": 117.45383522727273,
+    "duration": 9.247346938775511,
+    "beat_count": 11
+  },
+  "dance_info": {
+    "frame_count": 277,
+    "joint_count": 25
+  },
+  "output_files": {
+    "video": "dance_89113e09.mp4"
+  }
+}
