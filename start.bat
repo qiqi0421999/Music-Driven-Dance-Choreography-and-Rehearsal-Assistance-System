@@ -1,34 +1,43 @@
+# 创建新的start.bat（用英文避免乱码）
+@'
 @echo off
 echo ========================================
-echo   音乐驱动舞蹈辅助排演系统
-echo   开发者：齐雨晴
-echo   版本：1.0.0
+echo   Music Dance System
+echo   Developer: Qi Yuqing
+echo   Version: 1.0.0
 echo ========================================
 echo.
 
-echo 1. 检查Python...
+echo 1. Check Python...
 python --version
 if errorlevel 1 (
-    echo 错误：Python未安装！
+    echo Error: Python not installed!
     pause
     exit
 )
 
 echo.
-echo 2. 安装依赖...
-pip install -r requirements.txt
+echo 2. Install dependencies...
+if exist requirements.txt (
+    pip install -r requirements.txt
+) else (
+    echo Warning: requirements.txt not found!
+    echo Installing basic dependencies...
+    pip install Flask==2.3.3 Flask-CORS==4.0.0 librosa==0.10.1
+)
 
 echo.
-echo 3. 创建必要文件夹...
+echo 3. Create necessary folders...
 if not exist "data\music" mkdir data\music
 if not exist "data\outputs" mkdir data\outputs
 
 echo.
-echo 4. 启动系统...
-echo 请在浏览器访问：http://localhost:5000
-echo 按 Ctrl+C 停止
+echo 4. Start system...
+echo Please visit: http://localhost:5000
+echo Press Ctrl+C to stop
 echo ========================================
 echo.
 
 python run.py
 pause
+'@ | Out-File -FilePath "start.bat" -Encoding ASCII
