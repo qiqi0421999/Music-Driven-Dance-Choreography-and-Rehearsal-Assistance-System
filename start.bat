@@ -1,43 +1,48 @@
-# 创建新的start.bat（用英文避免乱码）
-@'
 @echo off
+chcp 65001 > nul
 echo ========================================
-echo   Music Dance System
-echo   Developer: Qi Yuqing
-echo   Version: 1.0.0
+echo   音乐驱动舞蹈辅助排演系统
+echo   Music-Driven Dance Rehearsal System
 echo ========================================
 echo.
+echo 正在检查环境...
+echo.
 
-echo 1. Check Python...
-python --version
+REM 检查Python
+python --version > nul 2>&1
 if errorlevel 1 (
-    echo Error: Python not installed!
+    echo 错误：未找到Python！
+    echo 请安装Python 3.8或更高版本
+    echo 下载地址：https://www.python.org/downloads/
     pause
-    exit
+    exit /b 1
 )
 
+echo Python检查通过
 echo.
-echo 2. Install dependencies...
+
+REM 检查并安装依赖
+echo 正在检查依赖包...
 if exist requirements.txt (
-    pip install -r requirements.txt
+    echo 安装依赖包...
+    pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ) else (
-    echo Warning: requirements.txt not found!
-    echo Installing basic dependencies...
-    pip install Flask==2.3.3 Flask-CORS==4.0.0 librosa==0.10.1
+    echo 错误：找不到requirements.txt
+    pause
+    exit /b 1
 )
 
 echo.
-echo 3. Create necessary folders...
+echo 正在创建必要目录...
 if not exist "data\music" mkdir data\music
 if not exist "data\outputs" mkdir data\outputs
 
 echo.
-echo 4. Start system...
-echo Please visit: http://localhost:5000
-echo Press Ctrl+C to stop
+echo ========================================
+echo 启动成功！
+echo 请打开浏览器访问：http://localhost:5000
+echo 按 Ctrl+C 停止程序
 echo ========================================
 echo.
-
 python run.py
 pause
-'@ | Out-File -FilePath "start.bat" -Encoding ASCII
