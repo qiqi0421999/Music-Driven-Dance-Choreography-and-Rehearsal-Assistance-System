@@ -1,0 +1,37 @@
+﻿# Python
+__pycache__/
+*.pyc
+venv/
+env/
+
+# 项目数据 - 音乐和视频不上传到GitHub
+data/music/*
+data/outputs/*
+
+# 编辑器配置文件
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 环境变量（重要！不要上传密码）
+.env
+*.env
+config.ini
+
+# Python缓存和编译文件
+*.pyo
+*.pyd
+.python-version
+
+# 日志文件
+*.log
+
+# 临时文件
+temp/
+tmp/
